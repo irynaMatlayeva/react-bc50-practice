@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/bc50-practice/static/css/main.1405db05.css",
+    "main.js": "/bc50-practice/static/js/main.a5b8d95c.js",
+    "index.html": "/bc50-practice/index.html",
+    "main.1405db05.css.map": "/bc50-practice/static/css/main.1405db05.css.map",
+    "main.a5b8d95c.js.map": "/bc50-practice/static/js/main.a5b8d95c.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1405db05.css",
+    "static/js/main.a5b8d95c.js"
+  ]
+}
