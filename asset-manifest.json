@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/bc50-practice/static/css/main.e7b43a8f.css",
-    "main.js": "/bc50-practice/static/js/main.3c7d264a.js",
+    "main.js": "/bc50-practice/static/js/main.0ccca4e4.js",
     "static/media/mock-university.svg": "/bc50-practice/static/media/mock-university.650dfc1db07a57b5376badfdaf40c154.svg",
     "static/media/faculties-icon.svg": "/bc50-practice/static/media/faculties-icon.12acb9717b7065272c8041de24eb490c.svg",
     "static/media/delete.svg": "/bc50-practice/static/media/delete.677d38a82de5abc1f9234f87ea3bf592.svg",
@@ -10,10 +10,10 @@
     "index.html": "/bc50-practice/index.html",
     "static/media/university-icon.svg": "/bc50-practice/static/media/university-icon.55603ce28345549d65a14a63969995e0.svg",
     "main.e7b43a8f.css.map": "/bc50-practice/static/css/main.e7b43a8f.css.map",
-    "main.3c7d264a.js.map": "/bc50-practice/static/js/main.3c7d264a.js.map"
+    "main.0ccca4e4.js.map": "/bc50-practice/static/js/main.0ccca4e4.js.map"
   },
   "entrypoints": [
     "static/css/main.e7b43a8f.css",
-    "static/js/main.3c7d264a.js"
+    "static/js/main.0ccca4e4.js"
   ]
 }
