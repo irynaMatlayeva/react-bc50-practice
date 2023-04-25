@@ -1,4 +1,4 @@
 import css from './Paper.module.css'
 
-const Paper = ({children}) => <div className={css.paper}>{children}</div>
+const Paper = ({children, classes}) => <div className={`${css.paper} ${classes}`}>{children}</div>
 export default Paper;
