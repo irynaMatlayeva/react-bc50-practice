@@ -1,6 +1,6 @@
 import MenuList from 'components/Menu/MenuList';
-import userImage from '../../assets/images/mock-user-ava.svg';
 import { LogoStyled, InnerContainer, UserContainer } from './SideBar.styled';
+import { BsPersonCircle } from 'react-icons/bs';
 
 const SideBar = () => {
   return (
@@ -10,11 +10,13 @@ const SideBar = () => {
         <MenuList />
 
         <UserContainer>
-          <img src={userImage} alt="user" />
+          <BsPersonCircle color="#FF6B0A" size={24}  />
           Bill Gates
         </UserContainer>
       </InnerContainer>
     </aside>
   );
 };
+
+
 export default SideBar;
