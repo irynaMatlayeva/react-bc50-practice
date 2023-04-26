@@ -4,6 +4,7 @@ import editIcon from '../../assets/images/edit.svg';
 import deleteIcon from '../../assets/images/delete.svg';
 import s from './Card.module.css';
 import { ImageStyled, TextStyled, ControlsStyled, ButtonStyled } from './Card.styled';
+import PropTypes from 'prop-types';
 
 const Card = ({ onEdit, onDelete, name }) => {
     return (
@@ -22,4 +23,10 @@ const Card = ({ onEdit, onDelete, name }) => {
         </Paper>
     )
 }
+Card.propTypes = {
+    onEdit: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired,
+    name: PropTypes.string.isRequired,
+}
+
 export default Card;
