@@ -5,3 +5,4 @@ export { default as Card } from './Card/Card';
 export { default as Section } from './Section/Section';
 export { default as TutorsList } from './Tutors/TutorsList.jsx';
 export { default as PartialList } from './Partials/PartialList.jsx';
+export { default as Button } from './Button/Button.jsx';
