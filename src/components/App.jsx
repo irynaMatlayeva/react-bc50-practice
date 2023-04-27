@@ -1,17 +1,17 @@
 import { Component } from 'react';
-import { SideBar, Main, Paper, Card, Section, TutorsList } from '../components';
+import { SideBar, Main, Paper, Card, Section, TutorsList, PartialList } from '../components';
 import universityData from '../constants/universityData.json';
 import tutorsIcon from '../assets/images/teachers-emoji.png';
-
 class App extends Component {
   state = {
     tutors: universityData.tutors ?? [],
-
+    cities: universityData.cities.map(city => ({text: city})) ?? [],
+    departments: universityData.department.map(({name}) => ({text: name})) ?? [],
   }
    onEdit = () => console.log('Edit');
-   onDelete = () => console.log('Delete');
+  onDelete = () => console.log('Delete');
+  handleDropdown = () => console.log('dropdown');
   render() {
-    console.log(this.state.tutors)
     return (
     <div className="app">
       <SideBar />
@@ -27,8 +27,12 @@ class App extends Component {
           <Section title="Tutors" image={tutorsIcon}>
             <TutorsList tutors={this.state.tutors} />
         </Section>
-        <Section title="Cities"></Section>
-        <Section title="Departments"></Section>
+          <Section title="Cities">
+            <PartialList listData={this.state.cities} isOpenDropdown={this.handleDropdown} />
+        </Section>
+          <Section title="Departments">
+            <PartialList listData={this.state.departments} isOpenDropdown={this.handleDropdown} />
+        </Section>
       </Main>
     </div>
   );

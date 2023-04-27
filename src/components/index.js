@@ -4,3 +4,4 @@ export { default as Paper } from './Paper/Paper';
 export { default as Card } from './Card/Card';
 export { default as Section } from './Section/Section';
 export { default as TutorsList } from './Tutors/TutorsList.jsx';
+export { default as PartialList } from './Partials/PartialList.jsx';
