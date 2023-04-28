@@ -8,9 +8,11 @@ import {
   TutorsList,
   PartialList,
   Button,
+  TutorForm,
 } from '../components';
 import universityData from '../constants/universityData.json';
 import tutorsIcon from '../assets/images/teachers-emoji.png';
+
 class App extends Component {
   state = {
     tutors: universityData.tutors ?? [],
@@ -18,9 +20,17 @@ class App extends Component {
     departments:
       universityData.department.map(({ name }) => ({ text: name })) ?? [],
   };
+  
   onEdit = () => console.log('Edit');
+  
   onDelete = () => console.log('Delete');
+  
   handleDropdown = () => console.log('dropdown');
+
+  addTutor = (tutor) => {
+    this.setState(({tutors}) => ({ tutors: [...tutors, tutor] }));
+  }
+
   render() {
     return (
       <div className="app">
@@ -36,6 +46,7 @@ class App extends Component {
           </Section>
           <Section title="Tutors" image={tutorsIcon}>
             <TutorsList tutors={this.state.tutors} />
+            <TutorForm addTutor={this.addTutor} />
             <Button isIcon text={'Add tutor'} />
           </Section>
           <Section title="Cities">
