@@ -3,7 +3,6 @@ import { TutorContainerStyled, ColumnStyled } from './TutorItem.styled';
 import PropTypes from 'prop-types';
 
 const TutorItem = ({firstName, lastName, patronymic, phone, email, city, options}) => {
-    console.log(lastName)
     return (
         <Paper>
             <TutorContainerStyled>
