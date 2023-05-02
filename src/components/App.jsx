@@ -18,9 +18,9 @@ import FORMS from 'constants/forms';
 class App extends Component {
   state = {
     tutors: universityData.tutors ?? [],
-    cities: universityData.cities.map(city => ({ text: city })) ?? [],
+    cities: universityData.cities.map(city => ({ text: city, rel: 'cities' })) ?? [],
     departments:
-      universityData.department.map(({ name }) => ({ text: name })) ?? [],
+      universityData.department.map(({ name }) => ({ text: name, rel: 'departments' })) ?? [],
     showForm: null,
   };
 
@@ -79,6 +79,10 @@ class App extends Component {
     }));
   };
 
+  handleDeleteCard = (id, rel) => {
+    this.setState((prev) => ({ [rel]: prev[rel].filter(el => el.text !== id) }));
+  }
+ 
   render() {
     console.log(this.state.showForm);
 
@@ -111,7 +115,7 @@ class App extends Component {
           <Section title="Cities">
             <PartialList
               listData={this.state.cities}
-              isOpenDropdown={this.handleDropdown}
+              handleDeleteCard={this.handleDeleteCard}
             />
             {this.state.showForm === FORMS.CITY_FORM && (
               <PartialForm title="adding city" onSubmit={this.addCity} />
@@ -125,7 +129,7 @@ class App extends Component {
           <Section title="Departments">
             <PartialList
               listData={this.state.departments}
-              isOpenDropdown={this.handleDropdown}
+              handleDeleteCard={this.handleDeleteCard}
             />
             {this.state.showForm === FORMS.DEPARTMENT_FORM && (
               <PartialForm
