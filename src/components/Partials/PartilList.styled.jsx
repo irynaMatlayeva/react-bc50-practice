@@ -49,3 +49,10 @@ export const ActionButtonStyled = s.button `
     heigth: 19px;
   }
 `
+export const ActionContainerStyled = s.div `
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 20px;
+
+`

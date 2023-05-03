@@ -10,6 +10,7 @@ import {
   Button,
   TutorForm,
   PartialForm,
+  Modal
 } from '../components';
 import universityData from '../constants/universityData.json';
 import tutorsIcon from '../assets/images/teachers-emoji.png';
@@ -22,6 +23,7 @@ class App extends Component {
     departments:
       universityData.department.map(({ name }) => ({ text: name, rel: 'departments' })) ?? [],
     showForm: null,
+    isModalOpen: null,
   };
 
   onEdit = () => console.log('Edit');
@@ -82,6 +84,10 @@ class App extends Component {
   handleDeleteCard = (id, rel) => {
     this.setState((prev) => ({ [rel]: prev[rel].filter(el => el.text !== id) }));
   }
+
+  handleModalOpen = (action) => {
+    this.setState({isModalOpen: action})
+  }
  
   render() {
     console.log(this.state.showForm);
@@ -114,6 +120,8 @@ class App extends Component {
           </Section>
           <Section title="Cities">
             <PartialList
+               toggleModal={this.handleModalOpen}
+              modalState={this.state.isModalOpen}
               listData={this.state.cities}
               handleDeleteCard={this.handleDeleteCard}
             />
@@ -128,6 +136,8 @@ class App extends Component {
           </Section>
           <Section title="Departments">
             <PartialList
+              toggleModal={this.handleModalOpen}
+              modalState={this.state.isModalOpen}
               listData={this.state.departments}
               handleDeleteCard={this.handleDeleteCard}
             />
