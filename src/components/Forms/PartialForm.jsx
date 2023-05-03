@@ -37,7 +37,7 @@ const PartialForm = ({ placeholder, title, onSubmit }) => {
               />
               <ErrorMessageStyled name={'name'} component={'div'} />
             </div>
-            <Button type="submit" text="Add" />
+            <Button type="submit" text="Save" />
           </Form>
         );
       }}

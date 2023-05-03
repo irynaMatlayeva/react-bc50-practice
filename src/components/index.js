@@ -8,3 +8,4 @@ export { default as PartialList } from './Partials/PartialList.jsx';
 export { default as Button } from './Button/Button.jsx';
 export { default as TutorForm } from './Forms/TutorForm';
 export { default as PartialForm } from './Forms/PartialForm';
+export { default as Modal } from './Modal/Modal';
