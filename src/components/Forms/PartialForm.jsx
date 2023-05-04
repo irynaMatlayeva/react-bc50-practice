@@ -3,13 +3,15 @@ import { Formik, Form, Field } from 'formik';
 import { ErrorMessageStyled } from './TutorForm.styled';
 import { Button } from 'components';
 
-const PartialForm = ({ placeholder, title, onSubmit }) => {
+const PartialForm = ({ placeholder, title, onSubmit, rel, id }) => {
   const initialValues = {
-    name: '',
+    name: id || '',
+
   };
 
   const handleSubmit = (values, { resetForm }) => {
-    onSubmit(values.name);
+    const data = id ? { id, rel, name: values.name } : values.name;
+    onSubmit(data);
     resetForm();
   };
 
@@ -37,7 +39,7 @@ const PartialForm = ({ placeholder, title, onSubmit }) => {
               />
               <ErrorMessageStyled name={'name'} component={'div'} />
             </div>
-            <Button type="submit" text="Save" />
+            <Button type="submit" text={id ? "Save" : 'Add'} />
           </Form>
         );
       }}
