@@ -54,7 +54,7 @@ class App extends Component {
       alert(`This City exist`);
     } else {
       this.setState(prevState => ({
-        cities: [...prevState.cities, { text: name }],
+        cities: [...prevState.cities, { text: name, rel: 'cities' }],
         showForm: null,
       }));
     }
@@ -69,7 +69,7 @@ class App extends Component {
       alert(`This Department exist`);
     } else {
       this.setState(prevState => ({
-        departments: [...prevState.departments, { text: name }],
+        departments: [...prevState.departments, { text: name,  rel: 'departments' }],
         showForm: null,
       }));
     }
@@ -88,10 +88,13 @@ class App extends Component {
   handleModalOpen = (action) => {
     this.setState({isModalOpen: action})
   }
- 
+  
+  handleEditCard = (data) => {
+    const { id, name, rel } = data;
+      const indexEl = this.state[rel].findIndex(item => item.text === id);
+      this.setState((prevState) => ({[rel]: [...prevState[rel].slice(0, indexEl), {text: name, rel}, ...prevState[rel].slice(indexEl + 1)]}))
+  }
   render() {
-    console.log(this.state.showForm);
-
     return (
       <div className="app">
         <SideBar />
@@ -124,6 +127,7 @@ class App extends Component {
               modalState={this.state.isModalOpen}
               listData={this.state.cities}
               handleDeleteCard={this.handleDeleteCard}
+              onEditCard={this.handleEditCard}
             />
             {this.state.showForm === FORMS.CITY_FORM && (
               <PartialForm title="adding city" onSubmit={this.addCity} />
@@ -140,6 +144,7 @@ class App extends Component {
               modalState={this.state.isModalOpen}
               listData={this.state.departments}
               handleDeleteCard={this.handleDeleteCard}
+              onEditCard={this.handleEditCard}
             />
             {this.state.showForm === FORMS.DEPARTMENT_FORM && (
               <PartialForm
