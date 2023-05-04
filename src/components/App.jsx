@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import {
   SideBar,
   Main,
@@ -10,158 +10,155 @@ import {
   Button,
   TutorForm,
   PartialForm,
-  Modal
+  Modal,
 } from '../components';
 import universityData from '../constants/universityData.json';
 import tutorsIcon from '../assets/images/teachers-emoji.png';
 import FORMS from 'constants/forms';
 
-class App extends Component {
-  state = {
-    tutors: universityData.tutors ?? [],
-    cities: universityData.cities.map(city => ({ text: city, rel: 'cities' })) ?? [],
-    departments:
-      universityData.department.map(({ name }) => ({ text: name, rel: 'departments' })) ?? [],
-    showForm: null,
-    isModalOpen: null,
+const App = () => {
+  const [tutors, setTutors] = useState(universityData.tutors ?? []);
+  const [cities, setCities] = useState(
+    universityData.cities.map(city => ({ text: city, rel: 'cities' })) ?? []
+  );
+  const [departments, setDepartments] = useState(
+    universityData.department.map(({ name }) => ({
+      text: name,
+      rel: 'departments',
+    })) ?? []
+  );
+  const [showForm, setShowForm] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(null);
+
+  const onEdit = () => console.log('Edit');
+
+  const onDelete = () => console.log('Delete');
+
+  const handleDropdown = () => console.log('dropdown');
+
+  const addTutor = tutor => {
+    setTutors([...tutors, tutor]);
+    setShowForm(null);
   };
 
-  onEdit = () => console.log('Edit');
-
-  onDelete = () => console.log('Delete');
-
-  handleDropdown = () => console.log('dropdown');
-
-  addTutor = tutor => {
-    this.setState(({ tutors }) => ({
-      tutors: [...tutors, tutor],
-      showForm: null,
-    }));
+  const deleteTutor = name => {
+    setTutors(tutors.filter(tutor => tutor.firstName !== name));
   };
 
-  deleteTutor = name => {
-    this.setState(({ tutors }) => ({
-      tutors: tutors.filter(tutor => tutor.firstName !== name),
-    }));
-  };
-
-  addCity = name => {
-    if (
-      this.state.cities.some(
-        city => city.text.toLowerCase() === name.toLowerCase()
-      )
-    ) {
+  const addCity = name => {
+    if (cities.some(city => city.text.toLowerCase() === name.toLowerCase())) {
       alert(`This City exist`);
     } else {
-      this.setState(prevState => ({
-        cities: [...prevState.cities, { text: name, rel: 'cities' }],
-        showForm: null,
-      }));
+      setCities([...cities, { text: name, rel: 'cities' }]);
+      setShowForm(null);
     }
   };
 
-  addDepartment = name => {
+  const addDepartment = name => {
     if (
-      this.state.departments.some(
+      departments.some(
         department => department.text.toLowerCase() === name.toLowerCase()
       )
     ) {
       alert(`This Department exist`);
     } else {
-      this.setState(prevState => ({
-        departments: [...prevState.departments, { text: name,  rel: 'departments' }],
-        showForm: null,
-      }));
+      setDepartments([...departments, { text: name, rel: 'departments' }]);
+      setShowForm(null);
     }
   };
 
-  handleShowForm = name => {
-    this.setState(prevState => ({
-      showForm: prevState.showForm === name ? null : name,
-    }));
+  const handleShowForm = name => {
+    setShowForm(showForm === name ? null : name);
   };
 
-  handleDeleteCard = (id, rel) => {
-    this.setState((prev) => ({ [rel]: prev[rel].filter(el => el.text !== id) }));
-  }
+  const handleDeleteCard = (id, rel) => {
+    if (rel === 'cities') {
+      setCities(cities.filter(el => el.text !== id));
+    } else {
+      setDepartments(departments.filter(el => el.text !== id));
+    }
+  };
 
-  handleModalOpen = (action) => {
-    this.setState({isModalOpen: action})
-  }
-  
-  handleEditCard = (data) => {
+  const handleModalOpen = action => {
+    setIsModalOpen(isModalOpen === action ? null : action);
+  };
+
+  const handleEditCard = data => {
     const { id, name, rel } = data;
-      const indexEl = this.state[rel].findIndex(item => item.text === id);
-      this.setState((prevState) => ({[rel]: [...prevState[rel].slice(0, indexEl), {text: name, rel}, ...prevState[rel].slice(indexEl + 1)]}))
-  }
-  render() {
-    return (
-      <div className="app">
-        <SideBar />
-        <Main>
-          <Section isRow isRightPosition title="Information about university">
-            <Card
-              onDelete={this.onDelete}
-              onEdit={this.onEdit}
-              name={universityData.name}
-            />
-            <Paper>{universityData.description}</Paper>
-          </Section>
-          <Section title="Tutors" image={tutorsIcon}>
-            <TutorsList
-              tutors={this.state.tutors}
-              deleteTutor={this.deleteTutor}
-            />
-            {this.state.showForm === FORMS.TUTOR_FORM && (
-              <TutorForm addTutor={this.addTutor} />
-            )}
-            <Button
-              isIcon
-              text={'Add tutor'}
-              action={() => this.handleShowForm(FORMS.TUTOR_FORM)}
-            />
-          </Section>
-          <Section title="Cities">
-            <PartialList
-               toggleModal={this.handleModalOpen}
-              modalState={this.state.isModalOpen}
-              listData={this.state.cities}
-              handleDeleteCard={this.handleDeleteCard}
-              onEditCard={this.handleEditCard}
-            />
-            {this.state.showForm === FORMS.CITY_FORM && (
-              <PartialForm title="adding city" onSubmit={this.addCity} />
-            )}
-            <Button
-              isIcon
-              text={'Add city'}
-              action={() => this.handleShowForm(FORMS.CITY_FORM)}
-            />
-          </Section>
-          <Section title="Departments">
-            <PartialList
-              toggleModal={this.handleModalOpen}
-              modalState={this.state.isModalOpen}
-              listData={this.state.departments}
-              handleDeleteCard={this.handleDeleteCard}
-              onEditCard={this.handleEditCard}
-            />
-            {this.state.showForm === FORMS.DEPARTMENT_FORM && (
-              <PartialForm
-                title="adding department"
-                onSubmit={this.addDepartment}
-              />
-            )}
-            <Button
-              isIcon
-              text={'Add department'}
-              action={() => this.handleShowForm(FORMS.DEPARTMENT_FORM)}
-            />
-          </Section>
-        </Main>
-      </div>
-    );
-  }
-}
+    if (rel === 'cities') {
+      const indexElCity = cities.findIndex(item => item.text === id);
+      setCities([
+        ...cities.slice(0, indexElCity),
+        { text: name, rel },
+        ...cities.slice(indexElCity + 1),
+      ]);
+    } else {
+      const indexElDepartment = departments.findIndex(item => item.text === id);
+      setDepartments([
+        ...departments.slice(0, indexElDepartment),
+        { text: name, rel },
+        ...departments.slice(indexElDepartment + 1),
+      ]);
+    }
+  };
+  return (
+    <div className="app">
+      <SideBar />
+      <Main>
+        <Section isRow isRightPosition title="Information about university">
+          <Card
+            onDelete={onDelete}
+            onEdit={onEdit}
+            name={universityData.name}
+          />
+          <Paper>{universityData.description}</Paper>
+        </Section>
+        <Section title="Tutors" image={tutorsIcon}>
+          <TutorsList tutors={tutors} deleteTutor={deleteTutor} />
+          {showForm === FORMS.TUTOR_FORM && <TutorForm addTutor={addTutor} />}
+          <Button
+            isIcon
+            text={'Add tutor'}
+            action={() => handleShowForm(FORMS.TUTOR_FORM)}
+          />
+        </Section>
+        <Section title="Cities">
+          <PartialList
+            toggleModal={handleModalOpen}
+            modalState={isModalOpen}
+            listData={cities}
+            handleDeleteCard={handleDeleteCard}
+            onEditCard={handleEditCard}
+          />
+          {showForm === FORMS.CITY_FORM && (
+            <PartialForm title="adding city" onSubmit={addCity} />
+          )}
+          <Button
+            isIcon
+            text={'Add city'}
+            action={() => handleShowForm(FORMS.CITY_FORM)}
+          />
+        </Section>
+        <Section title="Departments">
+          <PartialList
+            toggleModal={handleModalOpen}
+            modalState={isModalOpen}
+            listData={departments}
+            handleDeleteCard={handleDeleteCard}
+            onEditCard={handleEditCard}
+          />
+          {showForm === FORMS.DEPARTMENT_FORM && (
+            <PartialForm title="adding department" onSubmit={addDepartment} />
+          )}
+          <Button
+            isIcon
+            text={'Add department'}
+            action={() => handleShowForm(FORMS.DEPARTMENT_FORM)}
+          />
+        </Section>
+      </Main>
+    </div>
+  );
+};
 
 export default App;
