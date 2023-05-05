@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
   SideBar,
   Main,
@@ -10,23 +10,19 @@ import {
   Button,
   TutorForm,
   PartialForm,
-  Modal,
 } from '../components';
 import universityData from '../constants/universityData.json';
 import tutorsIcon from '../assets/images/teachers-emoji.png';
 import FORMS from 'constants/forms';
-import { postCity, getCity, updateCity, deleteCity } from 'api/citiesApi';
+import { postCity, updateCity, deleteCity } from 'api/citiesApi';
 import useCities from 'hooks/useCities';
+import {postDepartment,  updateDepartment, deleteDepartment} from '../api/departments'
+import useDepartments from '../hooks/useDepartments';
 
 const App = () => {
   const [tutors, setTutors] = useState(universityData.tutors ?? []);
   const [cities, setCities] = useCities();
-  const [departments, setDepartments] = useState(
-    universityData.department.map(({ name }) => ({
-      text: name,
-      rel: 'departments',
-    })) ?? []
-  );
+  const [departments, setDepartments] = useDepartments();
   const [showForm, setShowForm] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(null);
   
@@ -60,16 +56,19 @@ const App = () => {
   };
 
   const addDepartment = name => {
-    if (
+    postDepartment({ name }).then(({ data: { name, id } }) => {
+      if (
       departments.some(
         department => department.text.toLowerCase() === name.toLowerCase()
       )
     ) {
       alert(`This Department exist`);
     } else {
-      setDepartments([...departments, { text: name, rel: 'departments' }]);
+      setDepartments([...departments, { text: name, id, rel: 'departments' }]);
       setShowForm(null);
     }
+    })
+    
   };
 
   const handleShowForm = name => {
@@ -82,7 +81,10 @@ const App = () => {
         setCities(cities.filter(el => el.id !== data.id));
       })
     } else {
-      setDepartments(departments.filter(el => el.text !== id));
+      deleteDepartment(id).then(({ data }) => {
+ setDepartments(departments.filter(el => el.id !== data.id));
+      })
+     
     }
   };
 
@@ -93,23 +95,26 @@ const App = () => {
   const handleEditCard = data => {
     const { id, name, rel } = data;
     if (rel === 'cities') {
-      updateCity(id, { id, text: name }).then(({data})=> {
+      updateCity(id, { id, text: name }).then(({ data }) => {
         const indexElCity = cities.findIndex(item => item.id === data.id);
-      setCities([
-        ...cities.slice(0, indexElCity),
-        { text: data.text, rel, id: data.id },
-        ...cities.slice(indexElCity + 1),
-      ]);
+        setCities([
+          ...cities.slice(0, indexElCity),
+          { text: data.text, rel, id: data.id },
+          ...cities.slice(indexElCity + 1),
+        ]);
       })
       
     } else {
-      const indexElDepartment = departments.findIndex(item => item.text === id);
-      setDepartments([
-        ...departments.slice(0, indexElDepartment),
-        { text: name, rel },
-        ...departments.slice(indexElDepartment + 1),
-      ]);
+      updateDepartment(id, { id, name }).then(({ data }) => {
+        const indexElDepartment = departments.findIndex(item => item.id === data.id);
+        setDepartments([
+          ...departments.slice(0, indexElDepartment),
+          { text: data.name, rel, id: data.id },
+          ...departments.slice(indexElDepartment + 1),
+        ]);
+      })
     }
+      
   };
   return (
     <div className="app">
