@@ -2,7 +2,7 @@ import { ButtonsContainerStyled, ActionButtonStyled, ActionContainerStyled } fro
 import { ReactComponent as DeleteIcon } from '../../assets/images/delete.svg';
 import { ReactComponent as EditIcon } from '../../assets/images/edit.svg';
 import { PartialForm, Button, Modal } from 'components';
-const Dropdown = ({ deleteItem, toggleModal, modalState, rel, onEditCard, id }) => {
+const Dropdown = ({ deleteItem, toggleModal, modalState, rel, onEditCard, id, text }) => {
     console.log(modalState)
     return (
             <ButtonsContainerStyled >
@@ -10,7 +10,8 @@ const Dropdown = ({ deleteItem, toggleModal, modalState, rel, onEditCard, id }) 
                 <EditIcon />Edit</ActionButtonStyled>
             {
                 modalState === 'edit' && <Modal toggleModal={toggleModal} title='Edit information about a city'
-                    children={<PartialForm title={rel === 'cities' ? 'city' : 'department'} onSubmit={onEditCard} rel={rel} id={id} />} />
+                    children={<PartialForm title={rel === 'cities' ? 'city' : 'department'}
+                        onSubmit={onEditCard} rel={rel} id={id} text={text} />} />
                 }
                 <ActionButtonStyled onClick={() => toggleModal('delete')} >
                 <DeleteIcon />Delete</ActionButtonStyled>

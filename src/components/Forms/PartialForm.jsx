@@ -3,9 +3,9 @@ import { Formik, Form, Field } from 'formik';
 import { ErrorMessageStyled } from './TutorForm.styled';
 import { Button } from 'components';
 
-const PartialForm = ({ placeholder, title, onSubmit, rel, id }) => {
+const PartialForm = ({ placeholder, title, onSubmit, rel, id, text }) => {
   const initialValues = {
-    name: id || '',
+    name: text || '',
 
   };
 
