@@ -15,7 +15,7 @@ const PartialItem = ({ text, handleDeleteCard, id, rel, modalState, toggleModal,
             <ButtonStyled onClick={toggleDropdown}><Dots /></ButtonStyled>
             {isOpenDropdown &&
                 <Dropdown deleteItem={() => handleDeleteCard(id, rel)} modalState={modalState} toggleModal={toggleModal} rel={rel}
-                    onEditCard={onEditCard} id={id} />}
+                    onEditCard={onEditCard} id={id} text={text} />}
         </PartialItemStyled>
     )
 }

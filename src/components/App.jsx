@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   SideBar,
   Main,
@@ -15,12 +15,12 @@ import {
 import universityData from '../constants/universityData.json';
 import tutorsIcon from '../assets/images/teachers-emoji.png';
 import FORMS from 'constants/forms';
+import { postCity, getCity, updateCity, deleteCity } from 'api/citiesApi';
+import useCities from 'hooks/useCities';
 
 const App = () => {
   const [tutors, setTutors] = useState(universityData.tutors ?? []);
-  const [cities, setCities] = useState(
-    universityData.cities.map(city => ({ text: city, rel: 'cities' })) ?? []
-  );
+  const [cities, setCities] = useCities();
   const [departments, setDepartments] = useState(
     universityData.department.map(({ name }) => ({
       text: name,
@@ -29,7 +29,7 @@ const App = () => {
   );
   const [showForm, setShowForm] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(null);
-
+  
   const onEdit = () => console.log('Edit');
 
   const onDelete = () => console.log('Delete');
@@ -46,12 +46,17 @@ const App = () => {
   };
 
   const addCity = name => {
-    if (cities.some(city => city.text.toLowerCase() === name.toLowerCase())) {
+    postCity({
+      text: name
+    }).then(({data}) => {
+      if (cities.some(city => city.text.toLowerCase() === name.toLowerCase())) {
       alert(`This City exist`);
     } else {
-      setCities([...cities, { text: name, rel: 'cities' }]);
+      setCities([...cities, { ...data, rel: 'cities' }]);
       setShowForm(null);
     }
+    })
+    
   };
 
   const addDepartment = name => {
@@ -73,7 +78,9 @@ const App = () => {
 
   const handleDeleteCard = (id, rel) => {
     if (rel === 'cities') {
-      setCities(cities.filter(el => el.text !== id));
+      deleteCity(id).then(({data}) => {
+        setCities(cities.filter(el => el.id !== data.id));
+      })
     } else {
       setDepartments(departments.filter(el => el.text !== id));
     }
@@ -86,12 +93,15 @@ const App = () => {
   const handleEditCard = data => {
     const { id, name, rel } = data;
     if (rel === 'cities') {
-      const indexElCity = cities.findIndex(item => item.text === id);
+      updateCity(id, { id, text: name }).then(({data})=> {
+        const indexElCity = cities.findIndex(item => item.id === data.id);
       setCities([
         ...cities.slice(0, indexElCity),
-        { text: name, rel },
+        { text: data.text, rel, id: data.id },
         ...cities.slice(indexElCity + 1),
       ]);
+      })
+      
     } else {
       const indexElDepartment = departments.findIndex(item => item.text === id);
       setDepartments([
