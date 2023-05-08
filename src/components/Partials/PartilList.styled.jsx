@@ -1,20 +1,20 @@
-import s from "styled-components";
+import s from 'styled-components';
 import { BsThreeDotsVertical } from 'react-icons/bs';
- export const PartialListStyled = s.ul `
+export const PartialListStyled = s.ul`
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
     padding: 25px;
-`
-export const PartialItemStyled = s.li `
+`;
+export const PartialItemStyled = s.li`
     display: flex;
     position: relative;
     justify-content: space-between;
     background-color: #fff;
     margin-bottom: 10px;
     padding: 12px 24px;
-`
-export const ButtonStyled = s.button `
+`;
+export const ButtonStyled = s.button`
     display: flex;
     align-items: center;
     justify-content: center;
@@ -22,12 +22,13 @@ export const ButtonStyled = s.button `
     background-color: #fff;
     heigth: 20px;
     cursor: pointer;
-`
-export const Dots = s(BsThreeDotsVertical) `
+`;
+export const Dots = s(BsThreeDotsVertical)`
     fill: red;
-`
-export const ButtonsContainerStyled = s.div `
-    position: absolute;
+`;
+export const ButtonsContainerStyled = s.div`
+  z-index: 3;
+  position: absolute;
   bottom: -105px;
   right: 0;
   display: flex;
@@ -35,8 +36,8 @@ export const ButtonsContainerStyled = s.div `
   padding: 8px 0;
   background-color: white;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25);
-`
-export const ActionButtonStyled = s.button `
+`;
+export const ActionButtonStyled = s.button`
     padding: 10px;
     display: flex;
     align-items: center;
@@ -48,11 +49,11 @@ export const ActionButtonStyled = s.button `
     width: 19px;
     heigth: 19px;
   }
-`
-export const ActionContainerStyled = s.div `
+`;
+export const ActionContainerStyled = s.div`
   display: flex;
   justify-content: center;
   gap: 30px;
   margin-top: 20px;
 
-`
+`;
