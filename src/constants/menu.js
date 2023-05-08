@@ -4,13 +4,13 @@ import { HiBookOpen, HiAcademicCap } from 'react-icons/hi';
 export const menuConfig = [
   {
     name: 'University',
-    link: '/',
+    link: 'university',
     icon: <HiBookOpen color="#FF6B0A" size={24} />,
   },
 
   {
     name: 'Departments',
-    link: '/',
+    link: 'departments',
     icon: <HiAcademicCap color="#FF6B0A" size={24} />,
   },
 ];
