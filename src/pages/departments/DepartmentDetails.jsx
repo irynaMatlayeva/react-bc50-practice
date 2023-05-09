@@ -5,9 +5,7 @@ import { useMemo } from 'react';
 const DepartmentDetails = ({ departments }) => {
   const { departmentId } = useParams();
   const navigate = useNavigate();
-  const department = useMemo(() =>
-    departments.find(item => item.id === departmentId)
-  );
+  const department = useMemo(() => departments.find(item => item.id === departmentId), [departmentId, departments]);
 
   return (
     department && (

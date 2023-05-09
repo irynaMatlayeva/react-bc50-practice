@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Suspense, lazy, useState } from 'react';
 import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
 import { SideBar, Main } from '../components';
 import { postCity, updateCity, deleteCity } from 'api/citiesApi';
@@ -8,14 +8,15 @@ import {
   updateDepartment,
   deleteDepartment,
 } from '../api/departments';
-import useDepartments from '../hooks/useDepartments';
-import University from 'pages/university/University';
-import universityData from '../constants/universityData.json';
-import Departments from '../pages/departments/Department';
 import { useEffect } from 'react';
-import DepartmentDetails from 'pages/departments/DepartmentDetails';
-import DepartmentDescription from 'pages/departments/DepartmentDescription';
-import DepartmentHistory from 'pages/departments/DepartmentHistory';
+import useDepartments from '../hooks/useDepartments';
+import universityData from '../constants/universityData.json';
+
+const University = lazy(() => import("pages/university/University"));
+const Departments = lazy(() => import("pages/departments/Department"));
+const DepartmentDetails = lazy(() => import("pages/departments/DepartmentDetails"));
+const DepartmentDescription = lazy(() => import("pages/departments/DepartmentDescription"));
+const DepartmentHistory = lazy(() => import("pages/departments/DepartmentHistory"));
 
 const App = () => {
   const [tutors, setTutors] = useState(universityData.tutors ?? []);
@@ -32,8 +33,6 @@ const App = () => {
   const onEdit = () => console.log('Edit');
 
   const onDelete = () => console.log('Delete');
-
-  const handleDropdown = () => console.log('dropdown');
 
   const addTutor = tutor => {
     setTutors([...tutors, tutor]);
@@ -123,52 +122,54 @@ const App = () => {
     <div className="app">
       <SideBar />
       <Main>
-        <Routes>
-          <Route
-            path={'/university'}
-            element={
-              <University
-                onDelete={onDelete}
-                onEdit={onEdit}
-                tutors={tutors}
-                deleteTutor={deleteTutor}
-                showForm={showForm}
-                addTutor={addTutor}
-                handleShowForm={handleShowForm}
-                toggleModal={handleModalOpen}
-                modalState={isModalOpen}
-                listData={cities}
-                handleDeleteCard={handleDeleteCard}
-                onEditCard={handleEditCard}
-                addCity={addCity}
-              />
-            }
-          ></Route>
-          <Route path={'/departments'}>
+        <Suspense fallback={<h3>Loading...</h3>}>
+          <Routes>
             <Route
-              index
+              path={'/university'}
               element={
-                <Departments
+                <University
+                  onDelete={onDelete}
+                  onEdit={onEdit}
+                  tutors={tutors}
+                  deleteTutor={deleteTutor}
+                  showForm={showForm}
+                  addTutor={addTutor}
+                  handleShowForm={handleShowForm}
                   toggleModal={handleModalOpen}
                   modalState={isModalOpen}
-                  listData={departments}
+                  listData={cities}
                   handleDeleteCard={handleDeleteCard}
                   onEditCard={handleEditCard}
-                  showForm={showForm}
-                  onSubmit={addDepartment}
-                  handleShowForm={handleShowForm}
+                  addCity={addCity}
                 />
               }
-            />
-            <Route
-              path=":departmentId"
-              element={<DepartmentDetails departments={departments} />}
-            >
-              <Route path={'description'} element={<DepartmentDescription />} />
-              <Route path={'history'} element={<DepartmentHistory />} />
+            ></Route>
+            <Route path={'/departments'}>
+              <Route
+                index
+                element={
+                  <Departments
+                    toggleModal={handleModalOpen}
+                    modalState={isModalOpen}
+                    listData={departments}
+                    handleDeleteCard={handleDeleteCard}
+                    onEditCard={handleEditCard}
+                    showForm={showForm}
+                    onSubmit={addDepartment}
+                    handleShowForm={handleShowForm}
+                  />
+                }
+              />
+              <Route
+                path=":departmentId"
+                element={<DepartmentDetails departments={departments} />}
+              >
+                <Route path={'description'} element={<DepartmentDescription />} />
+                <Route path={'history'} element={<DepartmentHistory />} />
+              </Route>
             </Route>
-          </Route>
-        </Routes>
+          </Routes>
+        </Suspense>
       </Main>
     </div>
   );
