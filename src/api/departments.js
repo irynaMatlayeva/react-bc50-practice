@@ -1,4 +1,4 @@
-import axios from 'axios';
+// import axios from 'axios';
 import { postData, getData, updateData, deleteData } from './defaultApi';
 
 const DEPARTMENTS_URL = 'departments';
