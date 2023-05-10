@@ -2,6 +2,8 @@ import { Button } from 'components';
 import { Formik, Form } from 'formik';
 import { object, string } from 'yup';
 import { ErrorMessageStyled, FieldStyled } from './TutorForm.styled';
+import { addTutorActions } from 'store/tutors/actions';
+import { useDispatch } from 'react-redux';
 
 const tutorValidationSchema = object({
   firstName: string()
@@ -16,6 +18,8 @@ const tutorValidationSchema = object({
 });
 
 const TutorForm = ({ addTutor }) => {
+  const dispatch = useDispatch();
+
   const initialValues = {
     firstName: '',
     lastName: '',
@@ -37,7 +41,7 @@ const TutorForm = ({ addTutor }) => {
   const handleSubmit = (values, { resetForm }) => {
     //TODO
     // console.log(values);
-    addTutor(values);
+    dispatch(addTutorActions(values));
     resetForm();
   };
 

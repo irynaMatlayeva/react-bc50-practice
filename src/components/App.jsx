@@ -11,15 +11,22 @@ import {
 import { useEffect } from 'react';
 import useDepartments from '../hooks/useDepartments';
 import universityData from '../constants/universityData.json';
+import { fetchTutorsAction } from 'store/tutors/actions';
+import { useDispatch } from 'react-redux';
 
-const University = lazy(() => import("pages/university/University"));
-const Departments = lazy(() => import("pages/departments/Department"));
-const DepartmentDetails = lazy(() => import("pages/departments/DepartmentDetails"));
-const DepartmentDescription = lazy(() => import("pages/departments/DepartmentDescription"));
-const DepartmentHistory = lazy(() => import("pages/departments/DepartmentHistory"));
+const University = lazy(() => import('pages/university/University'));
+const Departments = lazy(() => import('pages/departments/Department'));
+const DepartmentDetails = lazy(() =>
+  import('pages/departments/DepartmentDetails')
+);
+const DepartmentDescription = lazy(() =>
+  import('pages/departments/DepartmentDescription')
+);
+const DepartmentHistory = lazy(() =>
+  import('pages/departments/DepartmentHistory')
+);
 
 const App = () => {
-  const [tutors, setTutors] = useState(universityData.tutors ?? []);
   const [cities, setCities] = useCities();
   const [departments, setDepartments] = useDepartments();
   const [showForm, setShowForm] = useState(null);
@@ -27,21 +34,19 @@ const App = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     if (pathname === '/') navigate('university');
   }, [navigate, pathname]);
+
+  useEffect(() => {
+    dispatch(fetchTutorsAction());
+  }, []);
+
   const onEdit = () => console.log('Edit');
 
   const onDelete = () => console.log('Delete');
-
-  const addTutor = tutor => {
-    setTutors([...tutors, tutor]);
-    setShowForm(null);
-  };
-
-  const deleteTutor = name => {
-    setTutors(tutors.filter(tutor => tutor.firstName !== name));
-  };
 
   const addCity = name => {
     postCity({
@@ -130,10 +135,7 @@ const App = () => {
                 <University
                   onDelete={onDelete}
                   onEdit={onEdit}
-                  tutors={tutors}
-                  deleteTutor={deleteTutor}
                   showForm={showForm}
-                  addTutor={addTutor}
                   handleShowForm={handleShowForm}
                   toggleModal={handleModalOpen}
                   modalState={isModalOpen}
@@ -164,7 +166,10 @@ const App = () => {
                 path=":departmentId"
                 element={<DepartmentDetails departments={departments} />}
               >
-                <Route path={'description'} element={<DepartmentDescription />} />
+                <Route
+                  path={'description'}
+                  element={<DepartmentDescription />}
+                />
                 <Route path={'history'} element={<DepartmentHistory />} />
               </Route>
             </Route>

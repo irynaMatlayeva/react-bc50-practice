@@ -1,6 +1,8 @@
 import { Paper } from 'components';
 import { TutorContainerStyled, ColumnStyled } from './TutorItem.styled';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { deleteTutorActions } from 'store/tutors/actions';
 
 const TutorItem = ({
   firstName,
@@ -10,8 +12,10 @@ const TutorItem = ({
   email,
   city,
   options,
-  deleteTutor,
+  id,
 }) => {
+  const dispatch = useDispatch();
+
   return (
     <Paper>
       <TutorContainerStyled>
@@ -29,7 +33,7 @@ const TutorItem = ({
           <p>{options}</p>
         </ColumnStyled>
         <ColumnStyled>
-          <button type="button" onClick={() => deleteTutor(firstName)}>
+          <button type="button" onClick={() => dispatch(deleteTutorActions(id))}>
             delete
           </button>
         </ColumnStyled>
