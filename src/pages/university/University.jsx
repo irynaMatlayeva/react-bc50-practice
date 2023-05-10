@@ -15,10 +15,7 @@ import FORMS from 'constants/forms';
 const University = ({
   onDelete,
   onEdit,
-  tutors,
-  deleteTutor,
   showForm,
-  addTutor,
   handleShowForm,
   toggleModal,
   modalState,
@@ -34,8 +31,8 @@ const University = ({
         <Paper>{universityData.description}</Paper>
       </Section>
       <Section title="Tutors" image={tutorsIcon}>
-        <TutorsList tutors={tutors} deleteTutor={deleteTutor} />
-        {showForm === FORMS.TUTOR_FORM && <TutorForm addTutor={addTutor} />}
+        <TutorsList />
+        {showForm === FORMS.TUTOR_FORM && <TutorForm />}
         <Button
           isIcon
           text={'Add tutor'}
