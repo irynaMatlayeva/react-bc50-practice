@@ -27,7 +27,6 @@ export default Button;
 
 Button.propTypes = {
   type: PropTypes.string,
-  action: PropTypes.func,
   styles: PropTypes.string,
   isIcon: PropTypes.bool,
   text: PropTypes.string.isRequired,

@@ -1,8 +1,6 @@
 import { Suspense, lazy, useState } from 'react';
 import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
 import { SideBar, Main } from '../components';
-import { postCity, updateCity, deleteCity } from 'api/citiesApi';
-import useCities from 'hooks/useCities';
 import {
   postDepartment,
   updateDepartment,
@@ -10,7 +8,6 @@ import {
 } from '../api/departments';
 import { useEffect } from 'react';
 import useDepartments from '../hooks/useDepartments';
-import universityData from '../constants/universityData.json';
 import { fetchTutorsAction } from 'store/tutors/actions';
 import { useDispatch } from 'react-redux';
 
@@ -27,7 +24,6 @@ const DepartmentHistory = lazy(() =>
 );
 
 const App = () => {
-  const [cities, setCities] = useCities();
   const [departments, setDepartments] = useDepartments();
   const [showForm, setShowForm] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(null);
@@ -42,24 +38,11 @@ const App = () => {
 
   useEffect(() => {
     dispatch(fetchTutorsAction());
-  }, []);
+  }, [dispatch]);
 
   const onEdit = () => console.log('Edit');
 
   const onDelete = () => console.log('Delete');
-
-  const addCity = name => {
-    postCity({
-      text: name,
-    }).then(({ data }) => {
-      if (cities.some(city => city.text.toLowerCase() === name.toLowerCase())) {
-        alert(`This City exist`);
-      } else {
-        setCities([...cities, { ...data, rel: 'cities' }]);
-        setShowForm(null);
-      }
-    });
-  };
 
   const addDepartment = name => {
     postDepartment({ name }).then(({ data: { name, id } }) => {
@@ -84,11 +67,7 @@ const App = () => {
   };
 
   const handleDeleteCard = (id, rel) => {
-    if (rel === 'cities') {
-      deleteCity(id).then(({ data }) => {
-        setCities(cities.filter(el => el.id !== data.id));
-      });
-    } else {
+    if (rel !== 'cities') {
       deleteDepartment(id).then(({ data }) => {
         setDepartments(departments.filter(el => el.id !== data.id));
       });
@@ -101,16 +80,7 @@ const App = () => {
 
   const handleEditCard = data => {
     const { id, name, rel } = data;
-    if (rel === 'cities') {
-      updateCity(id, { id, text: name }).then(({ data }) => {
-        const indexElCity = cities.findIndex(item => item.id === data.id);
-        setCities([
-          ...cities.slice(0, indexElCity),
-          { text: data.text, rel, id: data.id },
-          ...cities.slice(indexElCity + 1),
-        ]);
-      });
-    } else {
+    if (rel !== 'cities') {
       updateDepartment(id, { id, name }).then(({ data }) => {
         const indexElDepartment = departments.findIndex(
           item => item.id === data.id
@@ -139,10 +109,8 @@ const App = () => {
                   handleShowForm={handleShowForm}
                   toggleModal={handleModalOpen}
                   modalState={isModalOpen}
-                  listData={cities}
                   handleDeleteCard={handleDeleteCard}
                   onEditCard={handleEditCard}
-                  addCity={addCity}
                 />
               }
             ></Route>
