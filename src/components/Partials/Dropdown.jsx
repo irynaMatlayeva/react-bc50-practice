@@ -6,16 +6,15 @@ import {
 import { ReactComponent as DeleteIcon } from '../../assets/images/delete.svg';
 import { ReactComponent as EditIcon } from '../../assets/images/edit.svg';
 import { PartialForm, Button, Modal } from 'components';
-const Dropdown = ({
-  deleteItem,
-  toggleModal,
-  modalState,
-  rel,
-  onEditCard,
-  id,
-  text,
-}) => {
-  console.log(modalState);
+import {
+  deleteCitiesOperation,
+  updateCitiesOperation,
+} from 'store/cities/citiesOperations';
+import { useDispatch } from 'react-redux';
+
+const Dropdown = ({ toggleModal, modalState, rel, id, text }) => {
+  const dispatch = useDispatch();
+
   return (
     <ButtonsContainerStyled>
       <ActionButtonStyled onClick={() => toggleModal('edit')}>
@@ -29,7 +28,7 @@ const Dropdown = ({
           children={
             <PartialForm
               title={rel === 'cities' ? 'city' : 'department'}
-              onSubmit={onEditCard}
+              onSubmit={updateCitiesOperation}
               rel={rel}
               id={id}
               text={text}
@@ -52,7 +51,14 @@ const Dropdown = ({
           actions={
             <ActionContainerStyled>
               <Button text="No" action={toggleModal} />
-              <Button text="Yes" action={deleteItem} />
+              <Button
+                text="Yes"
+                action={() => {
+                  rel === 'cities'
+                    ? dispatch(deleteCitiesOperation(id))
+                    : console.log('departmentDel');
+                }}
+              />
             </ActionContainerStyled>
           }
         />

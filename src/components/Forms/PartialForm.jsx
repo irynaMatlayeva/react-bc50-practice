@@ -2,6 +2,7 @@ import { object, string } from 'yup';
 import { Formik, Form, Field } from 'formik';
 import { ErrorMessageStyled } from './TutorForm.styled';
 import { Button } from 'components';
+import { useDispatch } from 'react-redux';
 
 const PartialForm = ({
   placeholder,
@@ -12,13 +13,15 @@ const PartialForm = ({
   text,
   toggleModal,
 }) => {
+  const dispatch = useDispatch();
+
   const initialValues = {
     name: text || '',
   };
 
   const handleSubmit = (values, { resetForm }) => {
     const data = id ? { id, rel, name: values.name } : values.name;
-    onSubmit(data);
+    dispatch(onSubmit(data));
     toggleModal();
     resetForm();
   };
@@ -31,7 +34,6 @@ const PartialForm = ({
       validationSchema={validationSchema}
     >
       {({ values, handleChange, handleBlur, errors }) => {
-        // console.log(errors);
         return (
           <Form>
             <div>

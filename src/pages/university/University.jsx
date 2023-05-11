@@ -11,6 +11,12 @@ import {
 import universityData from '../../constants/universityData.json';
 import tutorsIcon from '../../assets/images/teachers-emoji.png';
 import FORMS from 'constants/forms';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  getCitiesOperation,
+  postCitiesOperation,
+} from 'store/cities/citiesOperations';
 
 const University = ({
   onDelete,
@@ -19,11 +25,16 @@ const University = ({
   handleShowForm,
   toggleModal,
   modalState,
-  listData,
   handleDeleteCard,
   onEditCard,
-  addCity,
 }) => {
+  const dispatch = useDispatch();
+  const cities = useSelector(state => state.cities.items);
+
+  useEffect(() => {
+    dispatch(getCitiesOperation());
+  }, [dispatch]);
+
   return (
     <>
       <Section isRow isRightPosition title="Information about university">
@@ -43,12 +54,12 @@ const University = ({
         <PartialList
           toggleModal={toggleModal}
           modalState={modalState}
-          listData={listData}
+          listData={cities}
           handleDeleteCard={handleDeleteCard}
           onEditCard={onEditCard}
         />
         {showForm === FORMS.CITY_FORM && (
-          <PartialForm title="adding city" onSubmit={addCity} />
+          <PartialForm title="adding city" onSubmit={postCitiesOperation} />
         )}
         <Button
           isIcon
