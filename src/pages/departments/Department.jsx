@@ -1,27 +1,31 @@
 import { Section, PartialList, Button, PartialForm } from 'components';
 import FORMS from 'constants/forms';
+import {useDispatch, useSelector} from 'react-redux';
+import {addDepartmentOperation, getDeparmentsOperation} from 'store/departments/departmentsOperations';
+import { useEffect } from 'react';
+import { allDepartmentsSelector } from 'store/departments/departmentsSelectors';
+
 
 const Departments = ({
   toggleModal,
   modalState,
-  listData,
-  handleDeleteCard,
-  onEditCard,
   showForm,
-  onSubmit,
   handleShowForm,
 }) => {
+  const dispatch = useDispatch();
+  const departments = useSelector(allDepartmentsSelector);
+  useEffect(() => {
+ dispatch(getDeparmentsOperation())
+  }, [dispatch])
   return (
     <Section title="Departments">
       <PartialList
         toggleModal={toggleModal}
         modalState={modalState}
-        listData={listData}
-        handleDeleteCard={handleDeleteCard}
-        onEditCard={onEditCard}
+        listData={departments}
       />
       {showForm === FORMS.DEPARTMENT_FORM && (
-        <PartialForm title="adding department" onSubmit={onSubmit} />
+        <PartialForm title="adding department" onSubmit={addDepartmentOperation} />
       )}
       <Button
         isIcon

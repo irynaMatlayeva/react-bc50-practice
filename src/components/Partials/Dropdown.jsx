@@ -10,7 +10,9 @@ import {
   deleteCitiesOperation,
   updateCitiesOperation,
 } from 'store/cities/citiesOperations';
+import {deleteDepartmentOperation, updateDepartmentOperation} from '../../store/departments/departmentsOperations';
 import { useDispatch } from 'react-redux';
+
 
 const Dropdown = ({ toggleModal, modalState, rel, id, text }) => {
   const dispatch = useDispatch();
@@ -28,7 +30,7 @@ const Dropdown = ({ toggleModal, modalState, rel, id, text }) => {
           children={
             <PartialForm
               title={rel === 'cities' ? 'city' : 'department'}
-              onSubmit={updateCitiesOperation}
+              onSubmit={rel === 'cities' ? updateCitiesOperation : updateDepartmentOperation}
               rel={rel}
               id={id}
               text={text}
@@ -56,7 +58,7 @@ const Dropdown = ({ toggleModal, modalState, rel, id, text }) => {
                 action={() => {
                   rel === 'cities'
                     ? dispatch(deleteCitiesOperation(id))
-                    : console.log('departmentDel');
+                    : dispatch(deleteDepartmentOperation(id));
                 }}
               />
             </ActionContainerStyled>

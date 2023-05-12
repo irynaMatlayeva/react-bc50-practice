@@ -1,8 +1,11 @@
 import { Section, Button } from 'components';
 import { Outlet, useParams, useNavigate } from 'react-router-dom';
 import { useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import { allDepartmentsSelector } from 'store/departments/departmentsSelectors';
 
-const DepartmentDetails = ({ departments }) => {
+const DepartmentDetails = () => {
+  const departments = useSelector(allDepartmentsSelector);
   const { departmentId } = useParams();
   const navigate = useNavigate();
   const department = useMemo(() => departments.find(item => item.id === departmentId), [departmentId, departments]);
