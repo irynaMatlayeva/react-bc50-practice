@@ -5,12 +5,11 @@ import { useNavigate } from 'react-router-dom';
 
 const PartialItem = ({
   text,
-  handleDeleteCard,
   id,
   rel,
   modalState,
   toggleModal,
-  onEditCard,
+  
 }) => {
   const [isOpenDropdown, setIsOpenDropdown] = useState(false);
 
@@ -34,11 +33,9 @@ const PartialItem = ({
       </ButtonStyled>
       {isOpenDropdown && (
         <Dropdown
-          deleteItem={() => handleDeleteCard(id, rel)}
           modalState={modalState}
           toggleModal={toggleModal}
           rel={rel}
-          onEditCard={onEditCard}
           id={id}
           text={text}
         />

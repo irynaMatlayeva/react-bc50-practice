@@ -25,8 +25,6 @@ const University = ({
   handleShowForm,
   toggleModal,
   modalState,
-  handleDeleteCard,
-  onEditCard,
 }) => {
   const dispatch = useDispatch();
   const cities = useSelector(state => state.cities.items);
@@ -55,8 +53,6 @@ const University = ({
           toggleModal={toggleModal}
           modalState={modalState}
           listData={cities}
-          handleDeleteCard={handleDeleteCard}
-          onEditCard={onEditCard}
         />
         {showForm === FORMS.CITY_FORM && (
           <PartialForm title="adding city" onSubmit={postCitiesOperation} />

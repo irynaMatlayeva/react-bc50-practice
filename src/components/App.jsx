@@ -1,13 +1,7 @@
 import { Suspense, lazy, useState } from 'react';
 import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
 import { SideBar, Main } from '../components';
-import {
-  postDepartment,
-  updateDepartment,
-  deleteDepartment,
-} from '../api/departments';
 import { useEffect } from 'react';
-import useDepartments from '../hooks/useDepartments';
 import { fetchTutorsAction } from 'store/tutors/actions';
 import { useDispatch } from 'react-redux';
 
@@ -24,7 +18,6 @@ const DepartmentHistory = lazy(() =>
 );
 
 const App = () => {
-  const [departments, setDepartments] = useDepartments();
   const [showForm, setShowForm] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(null);
   const navigate = useNavigate();
@@ -44,55 +37,16 @@ const App = () => {
 
   const onDelete = () => console.log('Delete');
 
-  const addDepartment = name => {
-    postDepartment({ name }).then(({ data: { name, id } }) => {
-      if (
-        departments.some(
-          department => department.text.toLowerCase() === name.toLowerCase()
-        )
-      ) {
-        alert(`This Department exist`);
-      } else {
-        setDepartments([
-          ...departments,
-          { text: name, id, rel: 'departments' },
-        ]);
-        setShowForm(null);
-      }
-    });
-  };
 
   const handleShowForm = name => {
     setShowForm(showForm === name ? null : name);
-  };
-
-  const handleDeleteCard = (id, rel) => {
-    if (rel !== 'cities') {
-      deleteDepartment(id).then(({ data }) => {
-        setDepartments(departments.filter(el => el.id !== data.id));
-      });
-    }
   };
 
   const handleModalOpen = action => {
     setIsModalOpen(isModalOpen === action ? null : action);
   };
 
-  const handleEditCard = data => {
-    const { id, name, rel } = data;
-    if (rel !== 'cities') {
-      updateDepartment(id, { id, name }).then(({ data }) => {
-        const indexElDepartment = departments.findIndex(
-          item => item.id === data.id
-        );
-        setDepartments([
-          ...departments.slice(0, indexElDepartment),
-          { text: data.name, rel, id: data.id },
-          ...departments.slice(indexElDepartment + 1),
-        ]);
-      });
-    }
-  };
+  
   return (
     <div className="app">
       <SideBar />
@@ -109,8 +63,6 @@ const App = () => {
                   handleShowForm={handleShowForm}
                   toggleModal={handleModalOpen}
                   modalState={isModalOpen}
-                  handleDeleteCard={handleDeleteCard}
-                  onEditCard={handleEditCard}
                 />
               }
             ></Route>
@@ -121,18 +73,14 @@ const App = () => {
                   <Departments
                     toggleModal={handleModalOpen}
                     modalState={isModalOpen}
-                    listData={departments}
-                    handleDeleteCard={handleDeleteCard}
-                    onEditCard={handleEditCard}
                     showForm={showForm}
-                    onSubmit={addDepartment}
                     handleShowForm={handleShowForm}
                   />
                 }
               />
               <Route
                 path=":departmentId"
-                element={<DepartmentDetails departments={departments} />}
+                element={<DepartmentDetails/>}
               >
                 <Route
                   path={'description'}
