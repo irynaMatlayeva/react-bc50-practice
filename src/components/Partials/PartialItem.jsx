@@ -3,14 +3,7 @@ import Dropdown from './Dropdown';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const PartialItem = ({
-  text,
-  id,
-  rel,
-  modalState,
-  toggleModal,
-  
-}) => {
+const PartialItem = ({ text, id, rel, modalState, toggleModal }) => {
   const [isOpenDropdown, setIsOpenDropdown] = useState(false);
 
   const navigate = useNavigate();
@@ -35,6 +28,7 @@ const PartialItem = ({
         <Dropdown
           modalState={modalState}
           toggleModal={toggleModal}
+          open={isOpenDropdown}
           rel={rel}
           id={id}
           text={text}
